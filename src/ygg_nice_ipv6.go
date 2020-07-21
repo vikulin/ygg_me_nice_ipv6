@@ -53,36 +53,57 @@ func main() {
 	if err != nil {
 		return
 	}
-	for core := 0; core < cores; core++ {
-		wg.Add(1)
-		go func(core int) {
-			defer wg.Done()
-			for a := 0; a < attempts/cores; a++ {
-				key:=newBoxKey()
-				if match_within_group(key.ip, matches){
-					encryptionKeys = append(encryptionKeys, key)
-					found++
-					file.WriteString(fmt.Sprintf("yggdrasil_encryption_public_key: %v\n", hex.EncodeToString(key.pub)))
-					file.WriteString(fmt.Sprintf("yggdrasil_encryption_private_key: %v\n", hex.EncodeToString(key.priv)))
-					file.WriteString(fmt.Sprintf("ipv6: %v\n", net.IP(key.ip).String()))
-					
+	
+	if(len(os.Args)<=3){
+		for core := 0; core < cores; core++ {
+			wg.Add(1)
+			go func(core int) {
+				defer wg.Done()
+				for a := 0; a < attempts/cores; a++ {
+					key:=newBoxKey()
+					if match_within_group(key.ip, matches){
+						encryptionKeys = append(encryptionKeys, key)
+						found++
+						file.WriteString(fmt.Sprintf("yggdrasil_encryption_public_key: %v\n", hex.EncodeToString(key.pub)))
+						file.WriteString(fmt.Sprintf("yggdrasil_encryption_private_key: %v\n", hex.EncodeToString(key.priv)))
+						file.WriteString(fmt.Sprintf("ipv6: %v\n", net.IP(key.ip).String()))
+						
+					}
+					bar.Increment()
 				}
-				if match_between_group(key.ip, matches){
-					encryptionKeys = append(encryptionKeys, key)
-					found++
-					file.WriteString(fmt.Sprintf("yggdrasil_encryption_public_key: %v\n", hex.EncodeToString(key.pub)))
-					file.WriteString(fmt.Sprintf("yggdrasil_encryption_private_key: %v\n", hex.EncodeToString(key.priv)))
-					file.WriteString(fmt.Sprintf("ipv6: %v\n", net.IP(key.ip).String()))
-					
+			}(core)
+		}
+	} else {
+		special_bytes_string := flag.Arg(2)
+		special_bytes, err := hex.DecodeString(special_bytes_string)
+		if err != nil {
+			// handle error
+			fmt.Println(err)
+			os.Exit(2)
+		}
+		fmt.Println(special_bytes)
+		for core := 0; core < cores; core++ {
+			wg.Add(1)
+			go func(core int) {
+				defer wg.Done()
+				for a := 0; a < attempts/cores; a++ {
+					key:=newBoxKey()
+					if match_with_group(key.ip, matches, special_bytes){
+						encryptionKeys = append(encryptionKeys, key)
+						found++
+						file.WriteString(fmt.Sprintf("yggdrasil_encryption_public_key: %v\n", hex.EncodeToString(key.pub)))
+						file.WriteString(fmt.Sprintf("yggdrasil_encryption_private_key: %v\n", hex.EncodeToString(key.priv)))
+						file.WriteString(fmt.Sprintf("ipv6: %v\n", net.IP(key.ip).String()))
+						
+					}
+					bar.Increment()
 				}
-				bar.Increment()
-			}
-		}(core)
+			}(core)
+		}
 	}
 	wg.Wait()
 	bar.Finish()
 }
-
 
 func match_within_group(s []byte, matches int) bool {
 	m:=0
@@ -90,6 +111,25 @@ func match_within_group(s []byte, matches int) bool {
 	   if s[b]==s[b+1] {
 	   	m++	
 	   }
+	}
+	if m>=matches {
+		return true
+	}
+	return false
+}
+
+func match_with_group(s []byte, matches int, special_bytes []byte) bool {
+	m:=0
+	for b:=2;b<=16-len(special_bytes);b=b+len(special_bytes){
+		i:=0
+		for sp:=0;sp<len(special_bytes);sp++{
+		   if s[b+sp]==special_bytes[sp] {
+		   	i++	
+		   }
+	   	}
+	   	if i>=len(special_bytes){
+			m++
+	   	}
 	}
 	if m>=matches {
 		return true
