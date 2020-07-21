@@ -1,5 +1,5 @@
 # ygg_me_nice_ipv6
-This go project generates nice ipv6 addresses such as ...aaaa:bbbb...., abab:cdcd , etc
+This go project generates nice Yggdrasil ipv6 addresses such as ...aaaa:bbbb...., abab:cdcd , etc
 
 example:
 5 is a number of matching bytes and 1000000000 attempts
