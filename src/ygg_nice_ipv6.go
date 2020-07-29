@@ -64,9 +64,10 @@ func main() {
 					if match_within_group(key.ip, matches){
 						encryptionKeys = append(encryptionKeys, key)
 						found++
-						file.WriteString(fmt.Sprintf("yggdrasil_encryption_public_key: %v\n", hex.EncodeToString(key.pub)))
-						file.WriteString(fmt.Sprintf("yggdrasil_encryption_private_key: %v\n", hex.EncodeToString(key.priv)))
-						file.WriteString(fmt.Sprintf("ipv6: %v\n", net.IP(key.ip).String()))
+						file.WriteString(fmt.Sprintf("IPv6: %v\n", net.IP(key.ip).String()))
+						file.WriteString(fmt.Sprintf("Yggdrasil_encryption_public_key: %v\n", hex.EncodeToString(key.pub)))
+						file.WriteString(fmt.Sprintf("Yggdrasil_encryption_private_key: %v\n", hex.EncodeToString(key.priv)))
+						file.WriteString("\n")
 						
 					}
 					bar.Increment()
@@ -91,9 +92,10 @@ func main() {
 					if match_with_group(key.ip, matches, special_bytes){
 						encryptionKeys = append(encryptionKeys, key)
 						found++
-						file.WriteString(fmt.Sprintf("yggdrasil_encryption_public_key: %v\n", hex.EncodeToString(key.pub)))
-						file.WriteString(fmt.Sprintf("yggdrasil_encryption_private_key: %v\n", hex.EncodeToString(key.priv)))
-						file.WriteString(fmt.Sprintf("ipv6: %v\n", net.IP(key.ip).String()))
+						file.WriteString(fmt.Sprintf("IPv6: %v\n", net.IP(key.ip).String()))
+						file.WriteString(fmt.Sprintf("Yggdrasil_encryption_public_key: %v\n", hex.EncodeToString(key.pub)))
+						file.WriteString(fmt.Sprintf("Yggdrasil_encryption_private_key: %v\n", hex.EncodeToString(key.priv)))
+						file.WriteString("\n")
 						
 					}
 					bar.Increment()
