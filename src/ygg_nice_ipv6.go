@@ -26,8 +26,16 @@ type keySet struct {
 }
 
 func main() {
-	
 	flag.Parse()
+	if(len(os.Args)==0) {
+		fmt.Println("This go project generates nice Yggdrasil ipv6 addresses such as ...aaaa:bbbb...., abab:cdcd , etc")
+		fmt.Println("Examples:")
+		fmt.Println("This command will find single match for c0fe in IPv6 address:")
+		fmt.Println("ygg_nice_ipv6.exe 1 1000000000 c0fe")
+		fmt.Println("This command will find single match for :: in IPv6 address:")
+		fmt.Println("ygg_nice_ipv6.exe 1 1000000000 00000000")
+        	os.Exit(0)
+	}
 	matches_string := flag.Arg(0)
 	attempts_string := flag.Arg(1)
 	cores := runtime.NumCPU()
@@ -35,12 +43,14 @@ func main() {
 	matches, err := strconv.Atoi(matches_string)
 	if err != nil {
         	// handle error
+		fmt.Println("Run ygg_me_nice_ipv6 without arguments to see usage examples")
 	        fmt.Println(err)
         	os.Exit(2)
 	}
 	attempts, err := strconv.Atoi(attempts_string)
 	if err != nil {
         	// handle error
+		fmt.Println("Run ygg_me_nice_ipv6 without arguments to see usage examples")
 	        fmt.Println(err)
         	os.Exit(2)
 	}
