@@ -87,11 +87,11 @@ func main() {
 					if matchWithinGroup(key.ip, matches) {
 						encryptionKeys = append(encryptionKeys, key)
 						found++
-						n, err := file.WriteString(fmt.Sprintf("yggdrasil_encryption_public_key: %v\n", hex.EncodeToString(key.publicKey)))
+						n, err := file.WriteString(fmt.Sprintf("IPv6: %v\n", net.IP(key.ip).String()))
 						checkWithN(err, n)
-						n, err = file.WriteString(fmt.Sprintf("yggdrasil_encryption_private_key: %v\n", hex.EncodeToString(key.privateKey)))
+						n, err = file.WriteString(fmt.Sprintf("Yggdrasil_encryption_public_key: %v\n", hex.EncodeToString(key.publicKey)))
 						checkWithN(err, n)
-						n, err = file.WriteString(fmt.Sprintf("ipv6: %v\n", net.IP(key.ip).String()))
+						n, err = file.WriteString(fmt.Sprintf("Yggdrasil_encryption_private_key: %v\n", hex.EncodeToString(key.privateKey)))
 						checkWithN(err, n)
 
 					}
@@ -117,11 +117,11 @@ func main() {
 					if matchWithGroup(key.ip, matches, specialBytes) {
 						encryptionKeys = append(encryptionKeys, key)
 						found++
-						n, err := file.WriteString(fmt.Sprintf("yggdrasil_encryption_public_key: %v\n", hex.EncodeToString(key.publicKey)))
+						n, err := file.WriteString(fmt.Sprintf("IPv6: %v\n", net.IP(key.ip).String()))
 						checkWithN(err, n)
-						n, err = file.WriteString(fmt.Sprintf("yggdrasil_encryption_private_key: %v\n", hex.EncodeToString(key.privateKey)))
+						n, err = file.WriteString(fmt.Sprintf("Yggdrasil_encryption_public_key: %v\n", hex.EncodeToString(key.publicKey)))
 						checkWithN(err, n)
-						n, err = file.WriteString(fmt.Sprintf("ipv6: %v\n", net.IP(key.ip).String()))
+						n, err = file.WriteString(fmt.Sprintf("Yggdrasil_encryption_private_key: %v\n", hex.EncodeToString(key.privateKey)))
 						checkWithN(err, n)
 
 					}
