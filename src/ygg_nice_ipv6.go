@@ -17,6 +17,7 @@ import (
 	"runtime"
 	"strconv"
 	"sync"
+	"time"
 )
 
 type keySet struct {
@@ -67,6 +68,8 @@ func main() {
 		os.Exit(2)
 	}
 	bar := pb.StartNew(attempts)
+	bar.SetRefreshRate(time.Second) //console will not lag
+	bar.SetWriter(os.Stdout)        //early it wrote to stderr
 	var encryptionKeys []keySet
 	var wg sync.WaitGroup
 	found := 0
