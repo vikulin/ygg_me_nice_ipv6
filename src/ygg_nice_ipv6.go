@@ -33,7 +33,7 @@ func check(e error) {
 
 func checkWithN(e error, n int) {
 	if e != nil {
-		fmt.Println(fmt.Printf("Error occurred: %v, n = %v", e, n))
+		fmt.Println(fmt.Printf("Error occurred: %v, Writed bytes: %v", e, n))
 	}
 }
 
@@ -93,6 +93,8 @@ func main() {
 						checkWithN(err, n)
 						n, err = file.WriteString(fmt.Sprintf("Yggdrasil_encryption_private_key: %v\n", hex.EncodeToString(key.privateKey)))
 						checkWithN(err, n)
+						n, err = file.WriteString("\n")
+						checkWithN(err, n)
 
 					}
 					bar.Increment()
@@ -122,6 +124,8 @@ func main() {
 						n, err = file.WriteString(fmt.Sprintf("Yggdrasil_encryption_public_key: %v\n", hex.EncodeToString(key.publicKey)))
 						checkWithN(err, n)
 						n, err = file.WriteString(fmt.Sprintf("Yggdrasil_encryption_private_key: %v\n", hex.EncodeToString(key.privateKey)))
+						checkWithN(err, n)
+						n, err = file.WriteString("\n")
 						checkWithN(err, n)
 
 					}
