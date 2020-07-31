@@ -180,8 +180,8 @@ func matchWithGroup(s []byte, matches int, specialBytes []byte) bool {
 //}
 
 func newBoxKey() keySet {
-	pub, priv := crypto.NewBoxKeys()
-	id := crypto.GetNodeID(pub)
+	publicKey, privateKey := crypto.NewBoxKeys()
+	id := crypto.GetNodeID(publicKey)
 	ip := address.AddrForNodeID(id)[:]
-	return keySet{priv[:], pub[:], ip}
+	return keySet{privateKey[:], publicKey[:], ip}
 }
