@@ -29,24 +29,29 @@ type keySet struct {
 func check(e error) {
 	if e != nil {
 		fmt.Println(fmt.Printf("Error occurred: %v", e))
+		panic(e)
 	}
 }
 
 func checkWithN(e error, n int) {
 	if e != nil {
 		fmt.Println(fmt.Printf("Error occurred: %v, Writed bytes: %v", e, n))
+		panic(e)
 	}
 }
 
 func main() {
 	flag.Parse()
-	if len(os.Args) == 0 {
-		fmt.Println("This go project generates nice Yggdrasil ipv6 addresses such as ...aaaa:bbbb...., abab:cdcd , etc")
+	if len(os.Args) == 1 {
+		fmt.Println("This go project generates nice Yggdrasil ipv6 addresses such as ...aaaa:bbbb...., abab:cdcd, and etc")
 		fmt.Println("Examples:")
 		fmt.Println("This command will find single match for c0fe in IPv6 address:")
 		fmt.Println("ygg_nice_ipv6.exe 1 1000000000 c0fe")
 		fmt.Println("This command will find single match for :: in IPv6 address:")
 		fmt.Println("ygg_nice_ipv6.exe 1 1000000000 00000000")
+		fmt.Println("This command will find beautiful address with 4 mirrored address blocks")
+		fmt.Println("Example: 204:bdbd:44b5:9191:7e7e:1635:e3e3:3504")
+		fmt.Println("ygg_nice_ipv6.exe 4 100000")
 		os.Exit(0)
 	}
 	matchesString := flag.Arg(0)
@@ -76,9 +81,7 @@ func main() {
 	err = os.MkdirAll("keys", 0755)
 	check(err)
 	file, err := os.Create("keys/res.txt")
-	if err != nil {
-		return
-	}
+	check(err)
 
 	if len(os.Args) <= 3 {
 		for core := 0; core < cores; core++ {
@@ -109,9 +112,13 @@ func main() {
 		specialBytes, err := hex.DecodeString(specialBytesString)
 		if err != nil {
 			// handle error
+			fmt.Println("Check you correctly entered special bytes parameter")
 			fmt.Println(err)
 			os.Exit(2)
 		}
+		fmt.Printf("Target: find %v %v times in address\n\n", specialBytesString, matchesString)
+		n, err := file.WriteString(fmt.Sprintf("Target: find %v %v times in address\n\n", specialBytesString, matchesString))
+		checkWithN(err, n)
 		fmt.Println(specialBytes)
 		for core := 0; core < cores; core++ {
 			wg.Add(1)
@@ -143,7 +150,7 @@ func main() {
 
 func matchWithinGroup(s []byte, matches int) bool {
 	m := 0
-	for b := 0; b < 15; b++ {
+	for b := 2; b < 15; b = b + 2 {
 		if s[b] == s[b+1] {
 			m++
 		}
