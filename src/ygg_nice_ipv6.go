@@ -29,12 +29,14 @@ type keySet struct {
 func check(e error) {
 	if e != nil {
 		fmt.Println(fmt.Printf("Error occurred: %v", e))
+		panic(e)
 	}
 }
 
 func checkWithN(e error, n int) {
 	if e != nil {
 		fmt.Println(fmt.Printf("Error occurred: %v, Writed bytes: %v", e, n))
+		panic(e)
 	}
 }
 
